@@ -1,18 +1,18 @@
-############################################################
-#########                                         # ########
-########                        Made             #  ########
-#######                          By             #    #######
-######        TELIUM       Jonah Crawford      #      ######
-#####                           and           #        #####
-####                      Jack Richardson    #          ####
-#############################################            ###
-####            Idea                         #          ####
-#####            By                           #        #####
-######      Craig Sargent       TELIUM         #      ######
-#######         and                             #    #######
-########    David Hillyard                       #  ########
-#########                                         # ########
-############################################################
+         ###########################################
+        #                                         # # 
+       #                        Made             #   #  
+      #                        By               #     #  
+     #    TELIUM       Jonah Crawford          #       #  
+    #                      and                #         #  
+   #                Jack Richardson          #           #
+  ###########################################   13/6/22   #
+   #            Idea                         #           # 
+    #              By                         #         #  
+     #         Craig Sargent         TELIUM    #       #  
+      #              and                        #     #  
+       #          David Hillyard                 #   #  
+        #                                         # #  
+         ########################################### 
 
 print("\033[1;37;50m")
 
@@ -68,10 +68,16 @@ answer_y = ("yes", "Yes", "Y", "y", "YES")
 answer_n = ("no", "No", "N", "n", "NO")
 answer_e = ("ok", "OK", "Ok", "E", "e", "Enter", "enter", "ENTER")
 global options, admin, rains
+options = {
+    "Speed of text": speed,
+    "Difficulty": "M",
+    "Admin mode": False ,
+    "Rainbow mode": False,
+    "Cut Scenes": True
+}
 rains = False
 admin = False
-options_ref = craw.get_options()
-speed = options_ref["Speed of text"]
+speed = options["Speed of text"]
 global played, wins, loss, worker_destroy
 played = 0
 wins = 0
@@ -79,7 +85,21 @@ loss = 0
 worker_destroy = 0
 global module_ls
 modules_ls = []
-
+num_modules = 18
+module = 1
+last_module = 0
+possible_moves = []
+alive = True
+won = False
+global power
+power = 150
+global fuel
+fuel = 500
+locked = 0
+queen = 0
+vent_shafts = []
+info_panels = []
+workers = []
 
 def sleep(s):
   time.sleep(s)
@@ -101,17 +121,23 @@ def d_print(text):
 d_print("\033[1;37;50m")
 clear()
 
-#def rainbow(text):
-#  for c in text:
-#    colour = random.randint(1, 7)
-#    if colour == 7:
-#      print("\033[1;3" + str(colour) + ";47m", str(c), end="")
-#    else:
-#      print("\033[1;3" + str(colour) + ";50m", str(c), end="")
-#  return null
+def rain(text):
+  if options["Rainbow mode"] == True:
+    rainbow(text)
+    print("\033[1;37;50m")
+  else:
+    d_print(text)
+  return null
+
+def rainbow(text):
+  for c in text:
+    colour = random.randint(1, 7)
+    print("\033[1;3" + str(colour) + ";50m", str(c), end="")
+    sleep(options["Speed of text"])
+  return null
 
 def animation(type):
-  if options_ref["Cut Scenes"] == True:
+  if options["Cut Scenes"] == True:
     print("\033[1;37;50m")
     clear()
     if type == 1:
@@ -577,51 +603,35 @@ while 1 == 1:
   if answer in answer_y:
     break
 
-num_modules = 18
-module = 1
-last_module = 0
-possible_moves = []
-alive = True
-won = False
-global power
-power = 150
-global fuel
-fuel = 500
-locked = 0
-queen = 0
-vent_shafts = []
-info_panels = []
-workers = []
-
 #Procedure declarations
 
 def check_vent_shafts():
   global num_modules, module, vent_shafts, fuel
   if module in vent_shafts:
-    craw.rain("There is a bank of fuel cells here")
+    rain("There is a bank of fuel cells here")
     print("")
-    craw.rain("You load one into your flamethrower")
+    rain("You load one into your flamethrower")
     print("")
-    if options_ref["Difficulty"] == "E":
+    if options["Difficulty"] == "E":
       fuel_gained = 75
-    if options_ref["Difficulty"] == "M":
+    if options["Difficulty"] == "M":
       fuel_gained = 50
-    if options_ref["Difficulty"] == "H":
+    if options["Difficulty"] == "H":
       fuel_gained = 25
     print("Fuel was", fuel, "now reading", fuel + fuel_gained)
     fuel = fuel + fuel_gained
     sleep(2)
-    craw.rain("The doors suddenly lock shut")
+    rain("The doors suddenly lock shut")
     print("")
-    craw.rain("What is happening to the station?")
+    rain("What is happening to the station?")
     print("")
-    craw.rain("Our only escape is to climb into the ventiltaion shaft")
+    rain("Our only escape is to climb into the ventiltaion shaft")
     sleep(4)
     print("")
-    craw.rain("We have no idea where we are going")
+    rain("We have no idea where we are going")
     sleep(4)
     print("")
-    craw.rain("We follow the passages and find ourselfs silding down")
+    rain("We follow the passages and find ourselfs silding down")
     sleep(3)
     load(0.5, random.randint(1, 2))
     last_module = module
@@ -640,15 +650,15 @@ def lock():
   new_lock = int(input("Enter module to lock: "))
   check4menu(new_lock)
   if new_lock <= 0 or new_lock > num_modules:
-    craw.rain("Invalid Module. Operation Failed.")
+    rain("Invalid Module. Operation Failed.")
   elif new_lock == queen:
-    craw.rain("Unable To Lock Module Due to Lifeform Present. Operation Failed.")
+    rain("Unable To Lock Module Due to Lifeform Present. Operation Failed.")
   else:
     locked = new_lock
     print("Module", locked, "Is Now Locked")
-  if options_ref["Difficulty"] == "M":
+  if options["Difficulty"] == "M":
     power_used = 25 + 5 * random.randint(0, 5)
-  elif options_ref["Difficulty"] == "H":
+  elif options["Difficulty"] == "H":
     power_used = 15 + 5 * random.randint(0, 3)
   power = power - power_used
   print("Used", power_used, "power, you now have", power, "power left")
@@ -676,18 +686,18 @@ def worker_aliens():
   global module, workers, fuel, alive
   #Output alien encountered
   if module in workers:
-    craw.rain("Startled, a small alien scuttles across the floor.")
-    craw.rain("It turns and leaps towards us")
+    rain("Startled, a small alien scuttles across the floor.")
+    rain("It turns and leaps towards us")
     #Get the player's action
     successful_attack = False
     while successful_attack == False:
-      craw.rain("You can:")
+      rain("You can:")
       print("")
-      craw.rain("- Short blast your flamethrower to frighten it away")
-      craw.rain("- Medium blast your flamethrower to try to kill it")
-      craw.rain("- Long blast your flamethrower to definetly kill it")
-      craw.rain("")
-      craw.rain("How will you react? ((s)MALL,(m)EDIUM, (l)ARGE)")
+      rain("- Short blast your flamethrower to frighten it away")
+      rain("- Medium blast your flamethrower to try to kill it")
+      rain("- Long blast your flamethrower to definetly kill it")
+      rain("")
+      rain("How will you react? ((s)MALL,(m)EDIUM, (l)ARGE)")
       action = 0
       while action not in ("S", "M", "L", "s", "m", "l"):
         action_2 = input("Press the trigger: ")
@@ -701,11 +711,11 @@ def worker_aliens():
           alive = False
           return null
         #work out how much fuel is needed
-        if options_ref["Difficulty"] == "E":
+        if options["Difficulty"] == "E":
           diff = 4
-        elif options_ref["Difficulty"] == "M":
+        elif options["Difficulty"] == "M":
           diff = 5
-        elif options_ref["Difficulty"] == "H":
+        elif options["Difficulty"] == "H":
           diff = 6
         if admin == True:
           fuel_needed = 0
@@ -720,16 +730,16 @@ def worker_aliens():
         if fuel_used >= fuel_needed:
           successful_attack = True
         else:
-          craw.rain("The Alien squeals but it is not dead. It's angry")
+          rain("The Alien squeals but it is not dead. It's angry")
         #successful action
       if action_2 in ("s", "S"):
         print("The alien scuttles away into the corner of the room")
       elif action_2 in ("m", "M"):
         dead_numb = random.randint(1, 10)
         if dead_numb < 4:
-          craw.rain("The alien scuttles away into the corner of the room, but it is not dead")
+          rain("The alien scuttles away into the corner of the room, but it is not dead")
         else:
-          craw.rain("The Alien has been destroyed")
+          rain("The Alien has been destroyed")
           worker_destroy += 1
           #remove the worker from the module
           workers.remove(module)
@@ -779,23 +789,23 @@ def get_action():
         return null
       elif command in ("Queen", "QUEEN", "Q", "q", "queen"):
         print("The Queen Alien is in module", queen)
-        if options_ref["Difficulty"] == "M":
+        if options["Difficulty"] == "M":
           power_used = 15 + 5 * random.randint(0, 3)
-        elif options_ref["Difficulty"] == "H":
+        elif options["Difficulty"] == "H":
           power_used = 25 + 5 * random.randint(0, 5)
         check4death()        
       if command in ("Workers", "WORKERS", "W", "w", "workers"):
         print("The workers are in module(s)", workers)
-        if options_ref["Difficulty"] == "M":
+        if options["Difficulty"] == "M":
           power_used = 15 + 5 * random.randint(0, 3)
-        elif options_ref["Difficulty"] == "H":
+        elif options["Difficulty"] == "H":
           power_used = 25 + 5 * random.randint(0, 5)
         check4death()
       if command in ("Vents", "VENTS", "V", "v", "vents"):
         print("The vents are in modules", vent_shafts)
-        if options_ref["Difficulty"] == "M":
+        if options["Difficulty"] == "M":
           power_used = 15 + 5 * random.randint(0, 3)
-        elif options_ref["Difficulty"] == "H":
+        elif options["Difficulty"] == "H":
           power_used = 25 + 5 * random.randint(0, 5)
         check4death()
       check4death()
@@ -818,7 +828,7 @@ def move_queen():
   global num_modules, module, last_module, locked, queen, won, vent_shafts
   #if we are in the same module as the queen
   if module == queen:
-    craw.rain("There it is! The queen alien is also in this module...")
+    rain("There it is! The queen alien is also in this module...")
     #decide how many moves the queen should take
     moves_to_make = random.randint(1, 3)
     can_move_to_last_module = False
@@ -838,19 +848,19 @@ def move_queen():
       if len(escapes) == 0:
         won = True
         moves_to_make = 0
-        craw.rain("... and the door is locked. It's trapped!")
+        rain("... and the door is locked. It's trapped!")
       #otherwise move the queen to an adjacent module
       else:
         if moves_to_make == 1:
-          craw.rain("...and has escaped.")
+          rain("...and has escaped.")
         random.choice(escapes)
         moves_to_make -= 1
         can_move_to_last_module = True
         #handle the queen being in a module with a vent shaft
         while queen in vent_shafts:
           if moves_to_make > 1:
-            craw.rain("...and has escaped")
-          craw.rain("We can hear scuttling in the vents")
+            rain("...and has escaped")
+          rain("We can hear scuttling in the vents")
           valid_move = False
           #queen cannot land in a module with another vent
           while valid_move == False:
@@ -867,12 +877,12 @@ def intuition():
   #Check what is in each of the possible 
   for connected_module in possible_moves:
     if connected_module in workers:
-      craw.rain("I can hear something scuttling!")
+      rain("I can hear something scuttling!")
       intu += 1
     if intu != 0:
       return null
     if connected_module in vent_shafts:
-      craw.rain("I can feel cold air")
+      rain("I can feel cold air")
       intu += 1
     if intu != 0:
       return null
@@ -1072,36 +1082,147 @@ def start_menu():
     elif arrow == "e":
       if start_point != ns:
         clear()
-        craw.rain("Ok, Starting Program!")
+        rain("Ok, Starting Program!")
         sleep(3)
         clear()
         return null
       elif help_point != ns:
         clear()
-        craw.rain("This is a game where you travel around the Charles Darwin, a spaceship that has been taken over by aliens")
+        rain("This is a game where you travel around the Charles Darwin, a spaceship that has been taken over by aliens")
         print("")
-        craw.rain("You navigate your surrondings with your keyboard and you alone decide what happens")
+        rain("You navigate your surrondings with your keyboard and you alone decide what happens")
         print("")
-        craw.rain("The main aim is to defeat the queen alien, Telium. To do so, you move around the map and block doors to trap and kill Telium")
+        rain("The main aim is to defeat the queen alien, Telium. To do so, you move around the map and block doors to trap and kill Telium")
         print("")
-        craw.rain("There are helper aliens who help her and you can kill them too, there are vents that can transport you to any random module")
+        rain("There are helper aliens who help her and you can kill them too, there are vents that can transport you to any random module")
         print("")
-        craw.rain("There is a limited amount of fuel and power on the spaceship, so be fast and efficient in your hunt!")
+        rain("There is a limited amount of fuel and power on the spaceship, so be fast and efficient in your hunt!")
         print("")
-        craw.rain("To return to the menu, Type 'menu' when a word input is required, digit inputs won't work!")
+        rain("To return to the menu, Type 'menu' when a word input is required, digit inputs won't work!")
         print("")
-        craw.rain("But most importantly... have fun!")
+        rain("But most importantly... have fun!")
         sleep(5)
         continue
       elif options_point != ns:
-        options, speed, power, fuel, admin, rains = craw.opt(1)       
+        menu = 1
+        global speed
+        global options
+        global changing_diff
+        changing_diff = 0
+        while 1 == 1:
+          clear()
+          speed = options["Speed of text"]
+          rain("What option do you want to edit? (Type exit to leave)")
+          print("")
+          for i in options:
+            print(i, "=", options[i])
+          print("")
+          change = input("> ")
+          if change not in options:
+            if change in ("Exit", "exit", "EXIT", "E", "e"):
+              break
+            else:
+              continue
+          else:
+            if change in ("Difficulty", "difficulty", "Diff", "diff", "DIFF", "DIFFICULTY"):
+              if menu == 1:  
+                changing_diff += 1
+                rain("What is the new value for difficulty?")
+                print("")
+                changed = input("> ")
+                if changed in ("easy", "EASY", "Easy", "E", "e"):
+                  options["Difficulty"] = "E"
+                  power = 250
+                  fuel = 750
+                elif changed in ("medium", "Medium", "MEDIUM", "normal", "Normal", "NORMAL", "M", "m", "N", "n"):
+                  options["Difficulty"] = "M"
+                  power = 150
+                  fuel = 500
+                elif changed in ("hard", "Hard", "HARD", "H", "h"):
+                  options["Difficulty"] = "H"
+                  power = 75
+                  fuel = 400
+                options.update()
+              else:
+                rain("This option can't be changed in-game")
+            if change in ("speed of text", "speed of Text", "speed Of text", "speed Of Text", "Speed of text", "Speed of Text", "Speed Of text", "Speed Of Text", "SPEED OF TEXT", "Speed", "speed", "SPEED"):
+              rain("What is the new value for Speed of text?")
+              print("")
+              raw_changed = input("> ")
+              changed = float(raw_changed)
+              if type(changed) != "<class 'str'>":
+                numbered = True
+              if numbered == True:
+                if changed > 1:
+                  rain("That value is too big!")
+                  sleep(2)
+                  continue
+                elif changed < 0.075:
+                  rain("That value is too small!")
+                  sleep(2)
+                  continue
+                else:
+                  options["Speed of text"] = changed
+                  options.update()
+                  speed = options["Speed of text"]
+              else:
+                rain("That's not a number")
+                sleep(2)
+                continue
+            if change in ("Admin Mode", "Admin mode", "admin mode", "Admin", "admin", "ADMIN MODE", "ADMIN"):
+              rain("What is change for Admin mode?")
+              print("")
+              changed = input("> ")
+              if changed in ("true", "True", "TRUE", "t", "T"):
+                rain("Passcode?")
+                password = input("> ")
+                passcode = os.environ['passcode']
+                if password == passcode:
+                  rain("Admin powers now granted!")
+                  admin = True
+                  options["Admin mode"] = True
+                  continue
+                else:
+                  rain("Incorrect passcode")
+                  admin = False
+                  continue
+              elif changed in ("False", "false", "F", "f"):
+                admin = True
+                options["Admin mode"] = True
+                continue
+            if change in ("Rainbow mode", "rainbow mode", "RAINBOW MODE", "Rainbow Mode"):
+              rain("This mode isnt recommended! What is the new value for Rainbow mode?")
+              print("")
+              changed = input("> ")
+              if changed in ("True", "true", "T"):
+                rains = True
+                options["Rainbow mode"] = True
+                continue
+              elif changed in ("False", "false", "F", "f"):
+                rains = False
+                options["Rainbow mode"] = False
+                continue
+              if change in ("Cut Scenes", "cut scenes", "Cut scenes", "CUT SCENES", "CUT", "cut", "SCENES", "Scenes", "scenes", "Cut"):
+                if menu == 1:
+                  rain("What is the new value?")
+                  changed = input("> ")
+                  if changed in ("True", "true", "T", "t"):
+                    options["Cut Scenes"] = True
+                  else:
+                    options["Cut Scenes"] = False
+                else:
+                  rain("This option can't be changed in-game")
+        options.update()
+        if changing_diff == 0:
+          power = 150
+          fuel = 500      
       elif credits_point != ns:
         clear()
-        craw.rain("Devs: Jonah 'The Craw' Crawford and Jack Richardson")
+        rain("Devs: Jonah 'The Craw' Crawford and Jack Richardson")
         print("")
-        craw.rain("Idea: Craig Sargent and David Hillyard")
+        rain("Idea: Craig Sargent and David Hillyard")
         print("")
-        craw.rain("Music: Epic Mountain")
+        rain("Music: Epic Mountain")
         sleep(5)
         continue
       elif stats_point != ns:
@@ -1110,13 +1231,13 @@ def start_menu():
         continue
       elif quit_point != ns:
         clear()
-        craw.rain("Thanks for playing!")
+        rain("Thanks for playing!")
         print("")
         sleep(0.5)
         print("")
         quit()
   clear()
-  craw.rain("Ok, Starting Program!")
+  rain("Ok, Starting Program!")
   sleep(3)
   clear()
   return null
@@ -1759,10 +1880,121 @@ def pause_menu():
         map_raw()
         continue
       elif options_point != ns:
-        options, speed, power, fuel, admin, rains = craw.opt(2)      
+        menu = 2
+        global speed
+        global options
+        global changing_diff
+        changing_diff = 0
+        while 1 == 1:
+          clear()
+          speed = options["Speed of text"]
+          rain("What option do you want to edit? (Type exit to leave)")
+          print("")
+          for i in options:
+            print(i, "=", options[i])
+          print("")
+          change = input("> ")
+          if change not in options:
+            if change in ("Exit", "exit", "EXIT", "E", "e"):
+              break
+            else:
+              continue
+          else:
+            if change in ("Difficulty", "difficulty", "Diff", "diff", "DIFF", "DIFFICULTY"):
+              if menu == 1:  
+                changing_diff += 1
+                rain("What is the new value for difficulty?")
+                print("")
+                changed = input("> ")
+                if changed in ("easy", "EASY", "Easy", "E", "e"):
+                  options["Difficulty"] = "E"
+                  power = 250
+                  fuel = 750
+                elif changed in ("medium", "Medium", "MEDIUM", "normal", "Normal", "NORMAL", "M", "m", "N", "n"):
+                  options["Difficulty"] = "M"
+                  power = 150
+                  fuel = 500
+                elif changed in ("hard", "Hard", "HARD", "H", "h"):
+                  options["Difficulty"] = "H"
+                  power = 75
+                  fuel = 400
+                options.update()
+              else:
+                rain("This option can't be changed in-game")
+            if change in ("speed of text", "speed of Text", "speed Of text", "speed Of Text", "Speed of text", "Speed of Text", "Speed Of text", "Speed Of Text", "SPEED OF TEXT", "Speed", "speed", "SPEED"):
+              rain("What is the new value for Speed of text?")
+              print("")
+              raw_changed = input("> ")
+              changed = float(raw_changed)
+              if type(changed) != "<class 'str'>":
+                numbered = True
+              if numbered == True:
+                if changed > 1:
+                  rain("That value is too big!")
+                  sleep(2)
+                  continue
+                elif changed < 0.075:
+                  rain("That value is too small!")
+                  sleep(2)
+                  continue
+                else:
+                  options["Speed of text"] = changed
+                  options.update()
+                  speed = options["Speed of text"]
+              else:
+                rain("That's not a number")
+                sleep(2)
+                continue
+            if change in ("Admin Mode", "Admin mode", "admin mode", "Admin", "admin", "ADMIN MODE", "ADMIN"):
+              rain("What is change for Admin mode?")
+              print("")
+              changed = input("> ")
+              if changed in ("true", "True", "TRUE", "t", "T"):
+                rain("Passcode?")
+                password = input("> ")
+                passcode = os.environ['passcode']
+                if password == passcode:
+                  rain("Admin powers now granted!")
+                  admin = True
+                  options["Admin mode"] = True
+                  continue
+                else:
+                  rain("Incorrect passcode")
+                  admin = False
+                  continue
+              elif changed in ("False", "false", "F", "f"):
+                admin = True
+                options["Admin mode"] = True
+                continue
+            if change in ("Rainbow mode", "rainbow mode", "RAINBOW MODE", "Rainbow Mode"):
+              rain("This mode isnt recommended! What is the new value for Rainbow mode?")
+              print("")
+              changed = input("> ")
+              if changed in ("True", "true", "T"):
+                rains = True
+                options["Rainbow mode"] = True
+                continue
+              elif changed in ("False", "false", "F", "f"):
+                rains = False
+                options["Rainbow mode"] = False
+                continue
+              if change in ("Cut Scenes", "cut scenes", "Cut scenes", "CUT SCENES", "CUT", "cut", "SCENES", "Scenes", "scenes", "Cut"):
+                if menu == 1:
+                  rain("What is the new value?")
+                  changed = input("> ")
+                  if changed in ("True", "true", "T", "t"):
+                    options["Cut Scenes"] = True
+                  else:
+                    options["Cut Scenes"] = False
+                else:
+                  rain("This option can't be changed in-game")
+        options.update()
+        if changing_diff == 0:
+          power = 150
+          fuel = 500
       elif quit_point != ns:
         clear()
-        craw.rain("Thanks for playing!")
+        rain("Thanks for playing!")
         print("")
         sleep(0.5)
         print("")
@@ -1797,7 +2029,7 @@ def stats():
     }
   while 1 == 1:  
     clear()
-    craw.rain("Stats:")
+    rain("Stats:")
     print("")
     for i in stat_d:
       print("")
@@ -1823,19 +2055,19 @@ def check4menu(answer):
 def check4death():
   if power <= 0 or not alive or fuel <= 0:
     if power <= 0:
-      craw.rain("The station has ran out of power and unable to sustain life support, you die!")
+      rain("The station has ran out of power and unable to sustain life support, you die!")
       sleep(5)
       clear()
       played += 1
       loss += 1
     elif fuel <= 0:
-      craw.rain("You have ran put of fuel and are now unable to fine more, you die!")
+      rain("You have ran put of fuel and are now unable to fine more, you die!")
       sleep(5)
       clear()
       played += 1
       loss += 1
     else:
-      craw.rain("The station has ran out of power and unable to sustain life support, you die!")
+      rain("The station has ran out of power and unable to sustain life support, you die!")
       sleep(5)
       clear()
       played += 1
@@ -1865,9 +2097,9 @@ while 1 == 1:
       output_moves()
       get_action()
   if won == True:
-    craw.rain("The queen is trapped and you burn it to death with your flamethrower.")
+    rain("The queen is trapped and you burn it to death with your flamethrower.")
     animation(2)
-    craw.rain(". . . . .")
+    rain(". . . . .")
     clear()
     rainbow("You Won!")
     print("\033[1;37;50m")
@@ -1877,7 +2109,7 @@ while 1 == 1:
     played += 1
     win += 1
   if alive == False:
-    craw.rain("The station has ran out of power and unable to sustain life support, you die!")
+    rain("The station has ran out of power and unable to sustain life support, you die!")
     sleep(5)
     clear()
     played += 1

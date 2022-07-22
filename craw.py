@@ -24,6 +24,8 @@ options = {
 global power, fuel, admin, rains
 power = 250
 fuel = 750
+admin = False
+rains = False
 
 def sleep(s):
   time.sleep(s)
@@ -330,4 +332,3 @@ def opt(menu):
   if changing_diff == 0:
     power = 150
     fuel = 500
-  return options, speed, power, fuel, admin, rains
