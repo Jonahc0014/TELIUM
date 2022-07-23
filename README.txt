@@ -7,8 +7,6 @@ Most of the code was from a structure frame made by Craig Sargent and David Hill
 jump starting the project. Thank you to my teacher who intorduced me and jack to the Telium idea
 and thanks to all the small snippets of code gracefully donated to the open scorce community, all links can be found in the code
 
-
-
 Have fun!
 
 Made by Jonah 'The Craw' Crawford and Jack Richardson
