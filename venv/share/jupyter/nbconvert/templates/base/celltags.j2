@@ -1,1 +1,7 @@
-/home/runner/.cache/pip/pool/fc/68/ba/aea0fc1d0510660cee451495a8327e279ac3d19f6598fb30ab6916ea67
+{%- macro celltags(cell) -%}
+    {% if cell.metadata.tags | length > 0 -%}
+        {% for tag in (cell.metadata.tags) -%}
+            {{ (' celltag_' ~ tag) | escape_html -}}
+        {%- endfor -%}
+    {%- endif %}
+{%- endmacro %}
