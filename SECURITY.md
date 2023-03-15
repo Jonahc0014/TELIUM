@@ -2,14 +2,20 @@
 
 ## Supported Versions
 
-Currently all Beta versions are being updated for security
+Currently Beta versions 0.41, 0.42 and 0.43 are being updated for security
 
 | Version | Supported          |
 | ------- | ------------------ |
 | alpha 0.1 | :x: |
-| alpha 0.2 | :x:                |
-| Beta 0.1  | :white_check_mark: |
-| Beta 0.2  | :white_check_mark: |
+| alpha 0.2 | :x: |
+| Beta 0.1  | :x: |
+| Beta 0.2  | :x: |
+| Beta 0.3  | :x: |
+| Beta 0.4  | :x: |
+| Beta 0.41  | :white_check_mark: |
+| Beta 0.42  | :white_check_mark: |
+| Beta 0.43  | :white_check_mark: |
+| Beta 0.44  | :white_check_mark: |
 
 
 ## Reporting a Vulnerability

@@ -36,6 +36,32 @@ from replit import audio
 import psutil
 import platform
 from replit import db
+import users
+
+data_users = users.get_name()
+
+user_info = users.output()
+
+username = user_info[0]
+user_password = user_info[1]
+
+def sleep(s):
+  time.sleep(s)
+  return null
+
+def clear():
+  command = "clear"
+  if os.name in ("nt", "dos"):
+    command = "cls"
+  os.system(command)
+  return null
+
+def d_print(text): 
+  for c in text:
+    sys.stdout.write(c)
+    sys.stdout.flush()
+    sleep(speed)
+  return null
 
 global null
 null = ""
@@ -110,22 +136,7 @@ global speed_2
 speed_2 = 0.1
 enter_shop = False
 
-def sleep(s):
-  time.sleep(s)
-  return null
-
-def clear():
-  command = "clear"
-  if os.name in ("nt", "dos"):
-    command = "cls"
-  os.system(command)
-  return null
-
-def d_print(text): 
-  for c in text:
-    sys.stdout.write(c)
-    sys.stdout.flush()
-    sleep(speed)
+empty_change = [0, 0, 0, 0, 0, 0, 0, 0]
 
 def setup():
   clear()
@@ -160,43 +171,7 @@ def song(list):
     audio.play_tone(list[1],list[0], 1)
   return null
   
-clear()
-colour_box("█")
-print("\033[1;37;50m")
-print("e2 86 91 e2 86 91 e2 86 93 e2 86 93 e2 86 90 e2 86 92 20 e2 86 90 e2 86 92 41 42")
-print("press any letter")
-
-key = getkey()
-if key == "u":
-  key = getkey()
-  if key == "u":
-    key = getkey()
-    if key == "d":
-      key = getkey()
-      if key == "d":
-        key = getkey()
-        if key == "l":
-          key = getkey()
-          if key == "r":
-            key = getkey()
-            if key == "l":
-              key = getkey()
-              if key == "r":
-                key = getkey()
-                if key == "a":
-                  key = getkey()
-                  if key == "b":
-                    clear()
-                    print("Passcode?")
-                    code = input()
-                    if code == passcode:
-                      setup()
-                      d_print("global varibles reset")
-                      sleep(5)
-else:
-  clear()
-
-song([[1, 420], [0.5, 750], [2, 300], [0.5, 1000], [1, 500]])
+#song([[1, 420], [0.5, 750], [2, 300], [0.5, 1000], [1, 500]])
 
 #source = audio.play_file('TELIUM_4.mp3', 1, True, -1)
 #volume = 1
@@ -242,21 +217,6 @@ song([[1, 420], [0.5, 750], [2, 300], [0.5, 1000], [1, 500]])
 #    buffer += key
 #    print(buffer)
 #    yes = 2
-
-craw.get_time()
-
-locale.setlocale(locale.LC_ALL, '')
-code = locale.getpreferredencoding()
-stdscr = curses.initscr()
-curses.endwin()
-      
-#tty.setcbreak(sys.stdin)
-#while 1 == 1:
-#  print(ord(sys.stdin.read(1)))
-
-
-d_print("\033[1;37;50m")
-clear()
 
 def rain(text):
   if options["Rainbow mode"] == True:
@@ -743,107 +703,6 @@ def animation(type):
 #animation(3)
 #animation(4)
 
-animation(4)
-sleep(3)
-while 1 == 1:  
-  rain("Press 'i' to view info or press 's' to start")
-  print("")
-  info = getkey()
-  if info == "i":
-    print("=" * 40, "System Information", "=" * 40)
-    global uname
-    uname = platform.uname()
-    print(f"System: {uname.system}")
-    print(f"Node Name: {uname.node}")
-    print(f"Release: {uname.release}")
-    print(f"Version: {uname.version}")
-    print(f"Machine: {uname.machine}")
-    print(f"Processor: {uname.processor}")
-    # Boot Time
-    print("=" * 40, "Boot Time", "=" * 40)
-    boot_time_timestamp = psutil.boot_time()
-    bt = datetime.fromtimestamp(boot_time_timestamp)
-    print(f"Boot Time: {bt.year}/{bt.month}/{bt.day} {bt.hour}:{bt.minute}:{bt.second}")
-    #CPU information
-    print("=" * 40, "CPU Info", "=" * 40)
-    #cores
-    print("Physical cores:", psutil.cpu_count(logical=False))
-    print("Total cores:", psutil.cpu_count(logical=True))
-    # CPU frequencies
-    cpufreq = psutil.cpu_freq()
-    print(f"Max Frequency: {cpufreq.max:.2f}Mhz")
-    print(f"Min Frequency: {cpufreq.min:.2f}Mhz")
-    print(f"Current Frequency: {cpufreq.current:.2f}Mhz")
-    # CPU usage
-    print("CPU Usage Per Core:")
-    for i, percentage in enumerate(psutil.cpu_percent(percpu=True, interval=1)):
-      print(f"Core {i}: {percentage}%")
-    print(f"Total CPU Usage: {psutil.cpu_percent()}%")
-    # Memory Information
-    print("=" * 40, "Memory Information", "=" * 40)
-    svmem = psutil.virtual_memory()
-    print(f"Total: {get_size(svmem.total)}")
-    print(f"Available: {get_size(svmem.available)}")
-    print(f"Used: {get_size(svmem.used)}")
-    print(f"Percentage: {svmem.percent}%")
-    print("=" * 20, "SWAP", "=" * 20)
-    # get the swap memory details (if exists)
-    swap = psutil.swap_memory()
-    print(f"Total: {get_size(swap.total)}")
-    print(f"Free: {get_size(swap.free)}")
-    print(f"Used: {get_size(swap.used)}")
-    print(f"Percentage: {swap.percent}%")
-    # Disk Information
-    print("=" * 40, "Disk Information", "=" * 40)
-    print("Partitions and Usage:")
-    # get all disk partitions
-    partitions = psutil.disk_partitions()
-    for partition in partitions:
-        print(f"====== Device: {partition.device} ======")
-        print(f"  Mountpoint: {partition.mountpoint}")
-        print(f"  File system type: {partition.fstype}")
-        try:
-            partition_usage = psutil.disk_usage(partition.mountpoint)
-        except PermissionError:
-            # this can be catched due to the disk that isn't ready
-            continue
-        print(f"  Total Size: {get_size(partition_usage.total)}")
-        print(f"  Used: {get_size(partition_usage.used)}")
-        print(f"  Free: {get_size(partition_usage.free)}")
-        print(f"  Percentage: {partition_usage.percent}%")
-    # get IO statistics since boot
-    disk_io = psutil.disk_io_counters()
-    print(f"Total read: {get_size(disk_io.read_bytes)}")
-    print(f"Total write: {get_size(disk_io.write_bytes)}")
-    # Network information
-    print("=" * 40, "Network Information", "=" * 40)
-    # get all network interfaces (virtual and physical)
-    if_addrs = psutil.net_if_addrs()
-    for interface_name, interface_addresses in if_addrs.items():
-        for address in interface_addresses:
-            print(f"=== Interface: {interface_name} ===")
-            if str(address.family) == 'AddressFamily.AF_INET':
-                print(f"  IP Address: {address.address}")
-                print(f"  Netmask: {address.netmask}")
-                print(f"  Broadcast IP: {address.broadcast}")
-            elif str(address.family) == 'AddressFamily.AF_PACKET':
-                print(f"  MAC Address: {address.address}")
-                print(f"  Netmask: {address.netmask}")
-                print(f"  Broadcast MAC: {address.broadcast}")
-    # get IO statistics since boot
-    net_io = psutil.net_io_counters()
-    print(f"Total Bytes Sent: {get_size(net_io.bytes_sent)}")
-    print(f"Total Bytes Received: {get_size(net_io.bytes_recv)}")
-    print("")
-    print("To exit, type exit")
-    exit = input("> ")
-    if exit in answer_e:
-      break
-    else:
-      continue
-  else:
-    break
-
 def load(waited, type):
   clear()
   percent = 0
@@ -887,19 +746,6 @@ def load(waited, type):
   clear()
   return null
 
-while 1 == 1:
-  clear()
-  d_print("\033[1;37;50mPlease Fully Expand Your Console")
-  print("")
-  sleep(2)
-  d_print("Done?")
-  print("")
-  answer = getkey()
-  if answer in answer_y:
-    break
-  #elif answer == "s":
-  #  skip = True
-  #  break
 
 #Procedure declarations
 
@@ -1025,6 +871,7 @@ def worker_aliens():
       #work out how much fuel is needed
       if dead == 1:
         rain("The Alien has been destroyed")
+        users.update_stats(shop_buys, username, [0, 0, 0, 1, 0, 0, 0, shop_buys])
         worker_destroy += 1
         #remove the worker from the module
         workers.remove(module)
@@ -1556,7 +1403,7 @@ def output_moves():
       print("   | |/______________________________________________________________\\| |")
       print("    ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾")
     else:
-      print("image not found, possible overlay of multiple elements")
+      print("Image not found, possible overlay of multiple elements")
     sleep(1) 
   else:
     print("you can move to any of the", len(possible_moves), "modules connected")
@@ -1656,12 +1503,11 @@ def spawn_npcs():
 def start_menu():
   global enter_shop, coins, admin, rains, power, fuel
   #  if skip != True:
-  load(2, random.randint(1, 2))
   #skip = False
 #  if options["Beta mode"] == True:
 #    main_source = audio.play_file("main.mp3")
 #    main_source.set_loop(-1)
-  main_source = audio.play_file("main.mp3")
+  #main_source = audio.play_file("main.mp3")
   clear()
   if played == 0:
   # and skip != True:
@@ -1743,7 +1589,7 @@ def start_menu():
     print("|_|   |_|_|\____)_| |_\_____|_|   \____(___/ \___/|_| |_|")
     sleep(speed_2)
     print("")
-    sleep(7)
+    sleep(4)
   #skip = False
   ns = " "
   start_point = "\033[1;31;50m◉"
@@ -1753,15 +1599,17 @@ def start_menu():
   credits_point = ns
   stats_point = ns
   quit_point = ns
-  global a
-  a = 4
+  login_point = ns
+  a = 3
   arrow = null
+  tp = users.output()
+  logged = tp[2]
   if played == 0:
     coins = 0
   while 1 == 1:  
     arrow = null
     clear()
-    print("\033[1;37;50mType 'u' Or 'd' To Navigate The Menu And Type 'e' To Enter")
+    print("\033[1;37;50mType 'w' Or 's' To Navigate The Menu And Type 'e' To Enter")
     for i in range(0, a - 1):
       print("")
     print("Coins:", coins)
@@ -1780,18 +1628,21 @@ def start_menu():
     for i in range(0, a):
       print("")
     print("\033[1;37;50m  ", credits_point, "\033[1;37;50m  Credits")
-    if played != 0:
+    if played != 0 or logged:
       for i in range(0, a):
         print("")
       print("\033[1;36;50m  ", stats_point, "\033[1;36;50m  Stats")
     for i in range(0, a):
       print("")
     print("\033[1;35;50m  ", quit_point, "\033[1;35;50m  Quit")
+    for i in range(0, a):
+      print("")
+    print("\033[1;31;50m   ", login_point, "\033[1;31;50m Log In")
     print("\033[1;37;50m")
     #d_print("This is the Menu, where you can operate commands and the like")
     #print("")
     arrow = getkey()
-    if arrow == "d":
+    if arrow == "s":
       if start_point != ns:
         start_point = ns
         help_point = "\033[1;32;50m◉"
@@ -1808,30 +1659,36 @@ def start_menu():
               options_point = ns
               credits_point = "\033[1;37;50m◉"
             else:
-              if credits_point != ns and played != 0:
+              if credits_point != ns and (played != 0 or logged):
                 credits_point = ns
                 stats_point = "\033[1;36;50m◉"
               elif stats_point != ns:
                   stats_point = ns
                   quit_point = "\033[1;35;50m◉"
-              elif credits_point != ns and played == 0:
+              elif credits_point != ns and (played == 0 or logged):
                 credits_point = ns
                 quit_point = "\033[1;35;50m◉" 
               elif quit_point != ns:
                 quit_point = ns
+                login_point = "\033[1;31;50m◉"
+              elif login_point != ns:
+                login_point = ns
                 start_point = "\033[1;31;50m◉"
-    elif arrow == "u":
+    elif arrow == "w":
       if start_point != ns:
         start_point = ns
-        quit_point = "\033[1;35;50m◉"
+        login_point = "\033[1;31;50m◉"
       else:
-        if quit_point != ns and played != 0:
+        if login_point != ns:
+          login_point = ns
+          quit_point = "\033[1;35;50m◉"
+        elif quit_point != ns and (played != 0 or logged):
           quit_point = ns
           stats_point = "\033[1;36;50m◉"
         elif stats_point != ns:
           stats_point = ns
           credits_point = "\033[1;37;50m◉"
-        elif quit_point != ns and played == 0:
+        elif quit_point != ns and (played == 0 or logged):
           quit_point = ns
           credits_point = "\033[1;37;50m◉"
         else:    
@@ -1907,21 +1764,22 @@ def start_menu():
           if str(shop_items[buying][shop_buys[buying]]) != "Sold Out":
             try:
               if coins >= int(shop_items[buying][shop_buys[buying]]):
-                rain("Are you sure? ")
+                rain("Are you sure?")
                 sure = input("> ")
                 if sure in answer_y:
                   rain("Item bought!")
                   coins -= int(shop_items[buying][shop_buys[buying]])
+                  users.update_stats(shop_buys, username, [0, 0, 0, 0, - int(shop_items[buying][shop_buys[buying]]), 0, int(shop_items[buying][shop_buys[buying]]), shop_buys])
                   print("You now have", coins, "coins")
                   sleep(2)
                   shop_buys[buying] = int(shop_buys[buying]) + 1
                   shop_items.update()
                   shop_buys.update()
               else:
-                rain("You dont have enough coins!")
+                rain("You don't have enough coins!")
                 sleep(2)
             except ValueError:
-              rain("That item is sold out!")
+              rain("That item is not available!")
               sleep(2)
           else:
             rain("That item is sold out!")
@@ -1965,6 +1823,8 @@ def start_menu():
                   options["Difficulty"] = "H"
                   power = 75
                   fuel = 400
+                rain("The Value has been changed!")
+                sleep(3)
                 options.update()
               else:
                 rain("This option can't be changed in-game")
@@ -2002,13 +1862,16 @@ def start_menu():
                 passcode = os.environ['passcode']
                 if password == passcode:
                   rain("Admin powers now granted!")
+                  sleep(2)
                   admin = True
                   coins += 100000
                   options["Admin mode"] = True
                   continue
                 else:
                   rain("Incorrect passcode")
-                  admin = False
+                  sleep(2)
+                  if admin:
+                    admin = False
                   continue
               elif changed in ("False", "false", "F", "f"):
                 admin = True
@@ -2036,6 +1899,7 @@ def start_menu():
                     options["Cut Scenes"] = False
                 else:
                   rain("This option can't be changed in-game")
+                  sleep(2)
             if change in ("beta mode", "Beta mode", "Beta Mode", "BETA MODE", "BETA", "Beta", "beta"):
               if menu == 1:
                 if options["Beta mode"] == False:
@@ -2044,10 +1908,12 @@ def start_menu():
                   if sure in ("yes", "Yes", "YES", "y", "Y"):
                     options["Beta mode"] = True
                     rain("Beta mode is now on")
+                    sleep(2)
                   else:
                     continue
                 else:
                   rain("Beta mode is now off")
+                  sleep(2)
                   options["Beta mode"] == False
               else:
                 rain("This option can't be changed in-game")
@@ -2057,14 +1923,9 @@ def start_menu():
           fuel = 500      
       elif credits_point != ns:
         clear()
-        rain("Devs: Jonah 'The Craw' Crawford and Jack Richardson")
-        print("")
-        rain("Idea: Craig Sargent and David Hillyard")
-        print("")
-        rain("Music: Epic Mountain")
-        sleep(5)
+        craw.credits()
         continue
-      elif stats_point != ns:
+      elif stats_point != ns and (played != 0 or logged):
         clear()
         stats()
         continue
@@ -2075,12 +1936,15 @@ def start_menu():
         sleep(0.5)
         print("")
         quit()
+      elif login_point != ns:
+        clear()
+        users.login()
+        continue
   clear()
   rain("Ok, Starting Program!")
   sleep(3)
   clear()
   return null
-
 
 def map_raw():
   numb = output_module()
@@ -2837,58 +2701,36 @@ def fav_module():
   return favorite
 
 def stats():
-  fav = fav_module()
-  if played != 0:
-    stat_d = {
-      "Games Played": played,
-      "Games Won": wins,
-      "Games Lost": loss,
-      "Percentage Won": (wins / played) * 100 + "%",
-      "Percentage Lost":(loss / played) * 100 + "%",
-      "Destroyed Workers": worker_destroy,
-      "Favorite Module": fav,
-      "Total Coins": total_coins,
-      "Coins Spent": total_coins - coins
-    }
-  else:
-    stat_d = {
-      "Games Played": 0,
-      "Games Won": 0,
-      "Games Lost": 0,
-      "Percentage Won": "0%",
-      "Percentage Lost": "0%",
-      "Destroyed Workers": 0,
-      "Favorite Module": "none",
-      "Total Coins": 0,
-      "Coins Spent": total_coins
-    }
-  db["global stats"][uname.node] = stat_d
-  while 1 == 1:  
-    clear()
-    rain("Stats:")
-    print("")
-    for i in stat_d:
+  try:
+    fav = fav_module()
+    tp = users.output()
+    username = tp[0]
+    while 1 == 1:  
+      clear()
+      rain("Stats:")
       print("")
-      print(i, stat_d[i])
-    print("")
-    print("Exit?")
-    exit = getkey()
-    if exit == "y":
-      return null
-    else:
-      continue
+      for i in db["user stats"][username]:
+        print("")
+        print(i, stat_d[i])
+      print("")
+      print("Exit?")
+      exit = getkey()
+      if exit == "y":
+        return null
+      else:
+        continue
+  except:
+    print("Sorry! Your stats are not available! Try logging in to an account")
   return null
 
 def check4menu(answer):
   global played
   global loss
   global admin
-  checked = False
+  commands = ["cls", "wks", "qen", "vnt", "ifo"]
   if answer in ("Menu", "menu", "MENU"):
-    checked = True
     pause_menu()
-  elif admin == True and answer not in ("Menu", "menu", "MENU"):
-    commands = ["cls", "wks", "qen", "vnt", "ifo"]
+  elif admin == True and answer not in ("Menu", "menu", "MENU") and answer not in commands:
     raw = answer.split()
     if raw[0] in ("CMD", "cmd", "Cmd"):
       cmd = raw[1].lower()
@@ -2906,8 +2748,8 @@ def check4menu(answer):
         else:
           rain("no command found")
   else:
-    checked = False
-  return checked
+    pass
+  return null
 
 def check4death():
   global played
@@ -2927,14 +2769,343 @@ def check4death():
       clear()
     played += 1
     loss += 1
+    users.update_stats(shop_buys, username, [1, 0, 1, 0, 0, 0, 0, shop_buys])
   return played, loss
 
-  # Main program starts here
+# Main program starts here
+
+
+clear()
+colour_box("█")
+print("\033[1;37;50m")
+print("press any letter")
+
+creator_pass = os.environ["creator passcode"]
+
+creator_ls = []
+
+for c in creator_pass:
+  creator_ls.append(c)
+
+skips = ("start menu", "end of game")
+
+key = getkey()
+if key == creator_ls[0]:
+  key = getkey()
+  if key == creator_ls[1]:
+    key = getkey()
+    if key == creator_ls[2]:
+      key = getkey()
+      if key == creator_ls[3]:
+        key = getkey()
+        if key == creator_ls[4]:
+          key = getkey()
+          if key == creator_ls[5]:
+            key = getkey()
+            if key == creator_ls[6]:
+              key = getkey()
+              if key == creator_ls[7]:
+                clear()
+                print("Passcode?")
+                code = input()
+                if code == passcode:
+                  print("What do you want to do?")
+                  print("reset | skip | list")
+                  choice = input()
+                  if choice in ("reset", "Reset", "r", "R"):
+                    setup()
+                    d_print("global varibles reset")
+                  elif choice in ("Skip", "skip", "S", "s"):
+                    print("Where would you like to skip to?")
+                    print(skips)
+                    skipped = input()
+                    if skipped in ("start menu", "start", "Start menu", "Start"):
+                      while 1 == 1:  
+                        start_menu()
+                        spawn_npcs()
+                        if admin == True:
+                          print("Queen alien is located in module:", queen)
+                          print("Ventilation shafts are located in modules:", vent_shafts)
+                          print("Info panels are located in modules:", info_panels)
+                          print("Worker aliens are located in modules:", workers)
+                          sleep(7)
+                        while alive and not won:
+                          load_module()
+                          check_vent_shafts()
+                          move_queen()
+                          worker_aliens()
+                          if won == False and alive == True:
+                            intuition()
+                            output_moves()
+                            get_action()
+                        old_coins = coins
+                        if won == True:
+                          rain("The queen is trapped and you burn it to death with your flamethrower.")
+                          animation(2)
+                          rain(". . . . .")
+                          clear()
+                          rainbow("You Won!")
+                          print("\033[1;37;50m")
+                          if admin == True:
+                            craw.rickroll()
+                          won = False
+                          played += 1
+                          wins += 1
+                          if shop_buys["More coins"] == 1:
+                            coins += random.randint(30, 125)
+                          elif shop_buys["More coins"] == 2:
+                            coins += random.randint(50, 145)
+                          elif shop_buys["More coins"] == 3:
+                            coins += random.randint(50, 155)
+                          elif shop_buys["More coins"] == 4:
+                            coins += random.randint(65, 160)
+                          else:
+                            coins += random.randint(75, 175)
+                          total_coins += (coins - old_coins)
+                          users.update_stats(shop_buys, username, [0, 0, 0, 0, (coins - old_coins),  (coins - old_coins), 0, shop_buys])
+                        if alive == False:
+                          rain("The station has ran out of power and unable to sustain life support, you die!")
+                          sleep(5)
+                          clear()
+                          played += 1
+                          loss += 1
+                          if shop_buys["More coins"] == 1:
+                            coins += random.randint(10, 50)
+                          elif shop_buys["More coins"] == 2:
+                            coins += random.randint(20, 60)
+                          elif shop_buys["More coins"] == 3:
+                            coins += random.randint(30, 70)
+                          elif shop_buys["More coins"] == 4:
+                            coins += random.randint(40, 70)
+                          else:
+                            coins += random.randint(50, 75)
+                          total_coins += (coins - old_coins)
+                        users.update_stats(shop_buys, username, [0, 0, 0, 0, (coins - old_coins),  (coins - old_coins), 0, shop_buys])
+                    elif skipped in ("end", "End", "End of game","end of game"):
+                      rain("The queen is trapped and you burn it to death with your flamethrower.")
+                      animation(2)
+                      rain(". . . . .")
+                      clear()
+                      rainbow("You Won!")
+                      print("\033[1;37;50m")
+                      if admin == True:
+                        craw.rickroll()
+                      won = False
+                      played += 1
+                      wins += 1
+                      if shop_buys["More coins"] == 1:
+                        coins += random.randint(30, 125)
+                      elif shop_buys["More coins"] == 2:
+                        coins += random.randint(50, 145)
+                      elif shop_buys["More coins"] == 3:
+                        coins += random.randint(50, 155)
+                      elif shop_buys["More coins"] == 4:
+                        coins += random.randint(65, 160)
+                      else:
+                        coins += random.randint(75, 175)
+                      total_coins += coins
+                      while 1 == 1:  
+                        if admin == True:
+                          played += 1
+                        #played += 1
+                        start_menu()
+                        spawn_npcs()
+                        if admin == True:
+                          print("Queen alien is located in module:", queen)
+                          print("Ventilation shafts are located in modules:", vent_shafts)
+                          print("Info panels are located in modules:", info_panels)
+                          print("Worker aliens are located in modules:", workers)
+                          sleep(7)
+                        while alive and not won:
+                          load_module()
+                          check_vent_shafts()
+                          move_queen()
+                          worker_aliens()
+                          if won == False and alive == True:
+                            intuition()
+                            output_moves()
+                            get_action()
+                        if won == True:
+                          rain("The queen is trapped and you burn it to death with your flamethrower.")
+                          animation(2)
+                          rain(". . . . .")
+                          clear()
+                          rainbow("You Won!")
+                          print("\033[1;37;50m")
+                          if admin == True:
+                            craw.rickroll()
+                          won = False
+                          played += 1
+                          wins += 1
+                          if shop_buys["More coins"] == 1:
+                            coins += random.randint(30, 125)
+                          elif shop_buys["More coins"] == 2:
+                            coins += random.randint(50, 145)
+                          elif shop_buys["More coins"] == 3:
+                            coins += random.randint(50, 155)
+                          elif shop_buys["More coins"] == 4:
+                            coins += random.randint(65, 160)
+                          else:
+                            coins += random.randint(75, 175)
+                          total_coins += coins
+                        if alive == False:
+                          rain("The station has ran out of power and unable to sustain life support, you die!")
+                          sleep(5)
+                          clear()
+                          played += 1
+                          loss += 1
+                          if shop_buys["More coins"] == 1:
+                            coins += random.randint(10, 50)
+                          elif shop_buys["More coins"] == 2:
+                            coins += random.randint(20, 60)
+                          elif shop_buys["More coins"] == 3:
+                            coins += random.randint(30, 70)
+                          elif shop_buys["More coins"] == 4:
+                            coins += random.randint(40, 70)
+                          else:
+                            coins += random.randint(50, 75)
+                          total_coins += coins
+                    elif choice in ("list", "List", "L", "l"):
+                      allvar = dir()
+                      print(allvar)
+else:
+  clear()
+
+craw.get_time()
+
+locale.setlocale(locale.LC_ALL, '')
+code = locale.getpreferredencoding()
+stdscr = curses.initscr()
+curses.endwin()
+      
+#tty.setcbreak(sys.stdin)
+#while 1 == 1:
+#  print(ord(sys.stdin.read(1)))
+
+d_print("\033[1;37;50m")
+clear()
+
+animation(4)
+sleep(3)
+
+while 1 == 1:
+  clear()
+  d_print("\033[1;37;50mPlease Fully Expand Your Console")
+  print("")
+  sleep(2)
+  d_print("Done?")
+  print("")
+  answer = getkey()
+  if answer in answer_y:
+    break
+  #elif answer == "s":
+  #  skip = True
+  #  break
+clear()
+while 1 == 1:  
+  rain("Press 'i' to view info or press 's' to start")
+  print("")
+  info = getkey()
+  if info == "i":
+    print("=" * 40, "System Information", "=" * 40)
+    global uname
+    uname = platform.uname()
+    print(f"System: {uname.system}")
+    print(f"Node Name: {uname.node}")
+    print(f"Release: {uname.release}")
+    print(f"Version: {uname.version}")
+    print(f"Machine: {uname.machine}")
+    print(f"Processor: {uname.processor}")
+    # Boot Time
+    print("=" * 40, "Boot Time", "=" * 40)
+    boot_time_timestamp = psutil.boot_time()
+    bt = datetime.fromtimestamp(boot_time_timestamp)
+    print(f"Boot Time: {bt.year}/{bt.month}/{bt.day} {bt.hour}:{bt.minute}:{bt.second}")
+    #CPU information
+    print("=" * 40, "CPU Info", "=" * 40)
+    #cores
+    print("Physical cores:", psutil.cpu_count(logical=False))
+    print("Total cores:", psutil.cpu_count(logical=True))
+    # CPU frequencies
+    cpufreq = psutil.cpu_freq()
+    print(f"Max Frequency: {cpufreq.max:.2f}Mhz")
+    print(f"Min Frequency: {cpufreq.min:.2f}Mhz")
+    print(f"Current Frequency: {cpufreq.current:.2f}Mhz")
+    # CPU usage
+    print("CPU Usage Per Core:")
+    for i, percentage in enumerate(psutil.cpu_percent(percpu=True, interval=1)):
+      print(f"Core {i}: {percentage}%")
+    print(f"Total CPU Usage: {psutil.cpu_percent()}%")
+    # Memory Information
+    print("=" * 40, "Memory Information", "=" * 40)
+    svmem = psutil.virtual_memory()
+    print(f"Total: {get_size(svmem.total)}")
+    print(f"Available: {get_size(svmem.available)}")
+    print(f"Used: {get_size(svmem.used)}")
+    print(f"Percentage: {svmem.percent}%")
+    print("=" * 20, "SWAP", "=" * 20)
+    # get the swap memory details (if exists)
+    swap = psutil.swap_memory()
+    print(f"Total: {get_size(swap.total)}")
+    print(f"Free: {get_size(swap.free)}")
+    print(f"Used: {get_size(swap.used)}")
+    print(f"Percentage: {swap.percent}%")
+    # Disk Information
+    print("=" * 40, "Disk Information", "=" * 40)
+    print("Partitions and Usage:")
+    # get all disk partitions
+    partitions = psutil.disk_partitions()
+    for partition in partitions:
+        print(f"====== Device: {partition.device} ======")
+        print(f"  Mountpoint: {partition.mountpoint}")
+        print(f"  File system type: {partition.fstype}")
+        try:
+            partition_usage = psutil.disk_usage(partition.mountpoint)
+        except PermissionError:
+            # this can be catched due to the disk that isn't ready
+            continue
+        print(f"  Total Size: {get_size(partition_usage.total)}")
+        print(f"  Used: {get_size(partition_usage.used)}")
+        print(f"  Free: {get_size(partition_usage.free)}")
+        print(f"  Percentage: {partition_usage.percent}%")
+    # get IO statistics since boot
+    disk_io = psutil.disk_io_counters()
+    print(f"Total read: {get_size(disk_io.read_bytes)}")
+    print(f"Total write: {get_size(disk_io.write_bytes)}")
+    # Network information
+    print("=" * 40, "Network Information", "=" * 40)
+    # get all network interfaces (virtual and physical)
+    if_addrs = psutil.net_if_addrs()
+    for interface_name, interface_addresses in if_addrs.items():
+        for address in interface_addresses:
+            print(f"=== Interface: {interface_name} ===")
+            if str(address.family) == 'AddressFamily.AF_INET':
+                print(f"  IP Address: {address.address}")
+                print(f"  Netmask: {address.netmask}")
+                print(f"  Broadcast IP: {address.broadcast}")
+            elif str(address.family) == 'AddressFamily.AF_PACKET':
+                print(f"  MAC Address: {address.address}")
+                print(f"  Netmask: {address.netmask}")
+                print(f"  Broadcast MAC: {address.broadcast}")
+    # get IO statistics since boot
+    net_io = psutil.net_io_counters()
+    print(f"Total Bytes Sent: {get_size(net_io.bytes_sent)}")
+    print(f"Total Bytes Received: {get_size(net_io.bytes_recv)}")
+    print("")
+    print("To exit, type exit")
+    exit = input("> ")
+    if exit in answer_e:
+      break
+    else:
+      continue
+  else:
+    break
 
 while 1 == 1:  
   if admin == True:
     played += 1
   #played += 1
+  load(2, random.randint(1, 2))
   start_menu()
   spawn_npcs()
   if admin == True:
@@ -2952,6 +3123,7 @@ while 1 == 1:
       intuition()
       output_moves()
       get_action()
+  old_coins = coins
   if won == True:
     rain("The queen is trapped and you burn it to death with your flamethrower.")
     animation(2)
@@ -2974,7 +3146,8 @@ while 1 == 1:
       coins += random.randint(65, 160)
     else:
       coins += random.randint(75, 175)
-    total_coins += coins
+    total_coins += (coins - old_coins)
+    users.update_stats(shop_buys, username, [0, 0, 0, 0, (coins - old_coins),  (coins - old_coins), 0, shop_buys])
   if alive == False:
     rain("The station has ran out of power and unable to sustain life support, you die!")
     sleep(5)
@@ -2991,4 +3164,5 @@ while 1 == 1:
       coins += random.randint(40, 70)
     else:
       coins += random.randint(50, 75)
-    total_coins += coins
+    total_coins += (coins - old_coins)
+  users.update_stats(shop_buys, username, [0, 0, 0, 0, (coins - old_coins),  (coins - old_coins), 0, shop_buys])

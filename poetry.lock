@@ -921,7 +921,7 @@ wcwidth = "*"
 
 [[package]]
 name = "psutil"
-version = "5.9.1"
+version = "5.9.2"
 description = "Cross-platform lib for process and system monitoring in Python."
 category = "main"
 optional = false
@@ -3210,7 +3210,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8.0,<3.9"
-content-hash = "35ec247b80d40e7a5ded97f9b8d17eecd7ad8e6c8c2790e6f55de82e216775cd"
+content-hash = "7254e965232ef5fbf04f4595d1d01f971f38696bb5b0e3c4d8d9cf0e61a38e1a"
 
 [metadata.files]
 aiohttp = []
